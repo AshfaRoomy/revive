@@ -9,6 +9,7 @@ public class ReviveApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ReviveApplication.class, args);
 		System.out.println("Revive Started");
+		System.out.println("git 1");
 	}
 
 }
