@@ -31,17 +31,11 @@ public class CartService {
     public ResponseEntity<?> addNewCartItem(Integer productId, Integer cartQuantity, Double totalPrice, HttpServletRequest request) {
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
         Product product = productRepository.findById(productId).get();
-        System.out.println("product details: "+product);
-        System.out.println("the other condition: "+cartRepository.existsByUserAndProductAndIsPurchased(user,product,false));
         if (cartRepository.existsByUserAndProductAndIsPurchased(user,product,false)) {
-            System.out.println("inside the if condition: ");
-            System.out.println("user and prdodcut: "+product+" : "+user);
 
             Cart cart = cartRepository.findByUserAndProduct(user,product);
-            System.out.println("cart: "+cart);
             cart.setCartQuantity(cart.getCartQuantity() + cartQuantity);
             cart.setTotalPrice(totalPrice);
-            System.out.println("final cart: "+cart);
             cartRepository.save(cart);
             return ResponseEntity.ok().body(new MessageResponse("Added to the existing product"));
         } else {

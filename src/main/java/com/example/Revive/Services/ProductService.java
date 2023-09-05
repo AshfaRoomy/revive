@@ -46,6 +46,7 @@ public class ProductService {
     //delete a Product
     public ResponseEntity<?> deleteProductByProductId(Integer id) {
         if (productRepository.existsById(id)) {
+            System.out.println("Product id:"+ id);
             productRepository.deleteById(id);
 
             return ResponseEntity.ok().body(new MessageResponse("Product deleted successfully"));

@@ -31,15 +31,22 @@ public class OrdersController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CUSTOMER')")
     @PostMapping(value = "order/add-order")
         public ResponseEntity<Orders> addOrder(@RequestBody Orders newOrder, HttpServletRequest request) {
-        System.out.println("new ordere: "+newOrder);
         return ordersService.addOrder(newOrder, request);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CUSTOMER')")
     @PostMapping(value = "/cart/add-order")
     public ResponseEntity<MessageResponse> addCartOrders(@RequestBody CartOrder newOrders, HttpServletRequest request) {
         System.out.println("the other one: "+newOrders);
         return ordersService.addCartOrders(newOrders, request);
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/cart-orders/{userId}")
+    public List<CartOrder> getAllCartOrdersByUserId(@PathVariable Integer userId, HttpServletRequest request) {
+        System.out.println("being called: "+userId);
+        return ordersService.getAllCartOrdersByUserId(userId,request);
     }
 
     @RequestMapping(value="/all-cartOrders")

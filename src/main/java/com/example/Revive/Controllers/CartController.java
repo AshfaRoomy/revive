@@ -23,7 +23,6 @@ public class CartController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority ('CUSTOMER')")
     @PostMapping(value = "/add-cart/{productId}")
     public ResponseEntity<?> addCart(@PathVariable Integer productId, @RequestParam Integer cartQuantity, @RequestParam double totalPrice, HttpServletRequest request) {
-        System.out.println("value: "+productId+" : "+cartQuantity);
         return cartService.addNewCartItem(productId, cartQuantity, totalPrice, request);
     }
 

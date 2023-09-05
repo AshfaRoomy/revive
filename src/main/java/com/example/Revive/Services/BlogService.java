@@ -1,7 +1,6 @@
 package com.example.Revive.Services;
 
 
-import com.example.Revive.Models.Product;
 import com.example.Revive.Repositories.BlogRepository;
 import com.example.Revive.Response.MessageResponse;
 import com.example.Revive.Models.Blog;
@@ -27,7 +26,6 @@ public class BlogService {
             blog.setBlogTitle(newBlog.getBlogTitle());
             blog.setBlogContent(newBlog.getBlogContent());
             blogRepository.save(blog);
-        System.out.println("new blog:"+newBlog);
             return ResponseEntity.ok(new MessageResponse("Successfully added a New Blog"));
 
     }
@@ -35,16 +33,18 @@ public class BlogService {
     //delete blog by the given id
     public ResponseEntity<?> deleteBlog(Integer blogId) {
         if (blogRepository.existsById(blogId)) {
+            System.out.println("the blog is : "+blogRepository.findById(blogId));
             blogRepository.deleteById(blogId);
-            return ResponseEntity.ok("Successfully Deleted the blog");
+            return ResponseEntity.ok().body(new MessageResponse("Successfully Deleted the blog"));
         } else {
-            return ResponseEntity.ok("There is no such blog id");
+            return ResponseEntity.badRequest().body(new MessageResponse("There is no such blog id"));
         }
     }
 
     //get all category
     public List<Blog> getAllBlog() {
         System.out.println(blogRepository.findAll());
+        System.out.println("the blogs list: "+blogRepository.findAll());
         return blogRepository.findAll();
     }
 

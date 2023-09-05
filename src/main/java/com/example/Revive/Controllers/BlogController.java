@@ -23,7 +23,6 @@ public class BlogController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/addBlog")
     public ResponseEntity<?> addBlog(@RequestBody Blog newBlog, HttpServletRequest httpServletRequest){
-        System.out.println("ashfaa: "+newBlog);
         return blogService.addBlog(newBlog);
     }
     @GetMapping(value = "/all")
@@ -35,8 +34,9 @@ public class BlogController {
     //    delete product
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping(value = "/deleteBlog/{blogId}")
-    public void deleteBlog(@PathVariable Integer blogId) {
-        blogService.deleteBlog(blogId);
+    public ResponseEntity<?> deleteBlog(@PathVariable Integer blogId,HttpServletRequest httpServletRequest)
+    {
+       return blogService.deleteBlog(blogId);
     }
 
     @GetMapping(value="/blog/{blogId}")

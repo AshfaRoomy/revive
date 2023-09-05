@@ -57,12 +57,14 @@ public class OrdersService {
 
     public List<CartOrder> getAllCartOrders() {
         List<CartOrder> cartOrderList = cartOrdersRepository.findAll();
+        System.out.println("cart order list ="+ cartOrderList);
         return cartOrderList;
     }
 
     public List<CartOrder> getAllCartByOrderId(Integer ordersId) {
         Orders orders = ordersRepository.findById(ordersId).get();
         List<CartOrder> cartList = cartOrdersRepository.findByOrders(orders);
+        System.out.println("Orders:"+orders);
         return cartList;
     }
 
@@ -74,26 +76,26 @@ public class OrdersService {
 
 //details about the order id user id the products that are made under this order
     public ResponseEntity<MessageResponse> addCartOrders(CartOrder newCartOrders, HttpServletRequest request) {
+        System.out.println("sid newCartOrders: "+newCartOrders);
+
         CartOrder cartOrders = new CartOrder();
         cartOrders.setOrders(newCartOrders.getOrders());
-        System.out.println(cartOrders.getOrders());
         cartOrders.setCart(newCartOrders.getCart());
-        System.out.println(cartOrders.getCart());
         Product product = newCartOrders.getCart().getProduct();
 
         product.setQuantity(newCartOrders.getCart().getProduct().getQuantity() - newCartOrders.getCart().getCartQuantity());
+        System.out.println("sid product: "+product);
         productRepository.save(product);
-        System.out.println("product saved");
         Cart cart = newCartOrders.getCart();
-        System.out.println(cart);
         cart.setPurchased(true);
-        System.out.println(cart.isPurchased());
         cartRepository.save(cart);
-        System.out.println("cart:"+ cart);
-
+        System.out.println("cart orders before save: "+cartOrders);
         cartOrdersRepository.save(cartOrders);
-        System.out.println(cartOrders);
         return ResponseEntity.ok().body(new MessageResponse("Your orders have been made successfully"));
+    }
+    public List<CartOrder> getAllCartOrdersByUserId(Integer userId, HttpServletRequest request) {
+        List<CartOrder> cartOrderList = cartOrdersRepository.findByOrdersUserUserIdOrderByCartOrderId(userId);
+        return cartOrderList;
     }
 
 //    public ResponseEntity<CartOrder> updateOrderStatus(Integer cartOrdersId, CartOrder updateCartOrders) {
