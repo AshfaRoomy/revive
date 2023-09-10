@@ -42,7 +42,7 @@ public class OrdersController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CUSTOMER')")
     @GetMapping("/cart-orders/{userId}")
     public List<CartOrder> getAllCartOrdersByUserId(@PathVariable Integer userId, HttpServletRequest request) {
         System.out.println("being called: "+userId);
@@ -53,6 +53,22 @@ public class OrdersController {
     public List<CartOrder> getAllCartOrders()
     {
         return ordersService.getAllCartOrders();
+    }
+
+    @RequestMapping(value="/orders-all")
+    public List<Orders> getAllOrders()
+    {
+        return ordersService.getAllOrders();
+    }
+    @RequestMapping(value="/all-orders/{userId}")
+    public List<Orders> getAllOrdersByUserId(@PathVariable Integer userId, HttpServletRequest httpServletRequest){
+        System.out.println("order controller");
+        return ordersService.getAllOrdersByUserId(userId);
+    }
+
+    @RequestMapping(value="/all-cart-orders/{orderId}")
+    public List<CartOrder> getAllUserCartOrderByOrderId(@PathVariable Integer orderId, HttpServletRequest httpServletRequest){
+        return ordersService.getAllUserCartOrderByOrderId(orderId);
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CUSTOMER')")

@@ -3,6 +3,7 @@ package com.example.Revive.Services;
 import com.example.Revive.Response.MessageResponse;
 import com.example.Revive.Models.*;
 import com.example.Revive.Repositories.*;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,7 @@ public class OrdersService {
         return cartOrderList;
     }
 
+
     public List<CartOrder> getAllCartByOrderId(Integer ordersId) {
         Orders orders = ordersRepository.findById(ordersId).get();
         List<CartOrder> cartList = cartOrdersRepository.findByOrders(orders);
@@ -68,6 +70,34 @@ public class OrdersService {
         return cartList;
     }
 
+    public List<Orders> getAllOrdersByUserId(Integer userId){
+        if(ordersRepository.existsByUserUserId(userId)){
+            List<Orders> ordersList = ordersRepository.findByUserUserId(userId);
+            System.out.println("userId:"+userId+"orders list:"+ordersList);
+            return ordersList;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public List<Orders> getAllOrders() {
+        List<Orders> ordersList = ordersRepository.findAll();
+        System.out.println("all orders list ="+ ordersList);
+        return ordersList;
+    }
+
+    public  List<CartOrder> getAllUserCartOrderByOrderId(Integer orderId){
+        if(ordersRepository.existsById(orderId)){
+            List<CartOrder> cartOrderList = ordersRepository.findByOrdersId(orderId);
+            System.out.println("the orders for the user: "+cartOrderList);
+            return cartOrderList;
+        }
+        else{
+            return null;
+        }
+
+    }
 //    public List<CartOrder> getAllCartOrdersByUserId(Integer customerId, HttpServletRequest request) {
 //        List<CartOrder> cartOrdersList = cartOrdersRepository.findByOrdersCustomerCustomerIdOrderByCartOrderId(customerId);
 //        return cartOrdersList;
@@ -94,7 +124,9 @@ public class OrdersService {
         return ResponseEntity.ok().body(new MessageResponse("Your orders have been made successfully"));
     }
     public List<CartOrder> getAllCartOrdersByUserId(Integer userId, HttpServletRequest request) {
+        System.out.println("user id here: "+userId);
         List<CartOrder> cartOrderList = cartOrdersRepository.findByOrdersUserUserIdOrderByCartOrderId(userId);
+        System.out.println("orderlist see here: "+cartOrderList);
         return cartOrderList;
     }
 

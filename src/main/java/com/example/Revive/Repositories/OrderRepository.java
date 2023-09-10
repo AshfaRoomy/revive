@@ -1,5 +1,6 @@
 package com.example.Revive.Repositories;
 
+import com.example.Revive.Models.CartOrder;
 import com.example.Revive.Models.User;
 import com.example.Revive.Models.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,8 @@ public interface OrderRepository extends JpaRepository<Orders,Integer> {
 //    List<Orders> findByUserAndStatusOrderByOrdersIdDesc(User user, String status);
 //
 //    List<Orders> findByStatus(String status);
+    boolean existsByUserUserId(Integer userId);
+    List<Orders> findByUserUserId(Integer userId);
+
+    List<CartOrder> findByOrdersId(Integer orderId);
 }
