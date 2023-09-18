@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -34,7 +36,11 @@ public class RateReviewService {
             User user = userRepository.findByUsername(request.getUserPrincipal().getName()).get();
             Product product = productRepository.findById(productId).get();
             RateReview rateReview = new RateReview();
-            rateReview.setDate(newRateReview.getDate());
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            System.out.println(dtf.format(now));
+            rateReview.setDate(dtf.format(now));
+            rateReview.setUser(user);
             rateReview.setProduct(product);
             rateReview.setFeedback(newRateReview.getFeedback());
             rateReview.setRate(newRateReview.getRate());

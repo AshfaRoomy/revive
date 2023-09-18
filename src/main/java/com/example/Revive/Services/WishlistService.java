@@ -29,12 +29,9 @@ public class WishlistService {
 
     public ResponseEntity<?> onWishListItem(Integer productId, HttpServletRequest request){
         Product product = productRepository.findById(productId).orElse(null);
-        System.out.println(product);
         User user = userRepository.findByUsername(request.getUserPrincipal().getName()).orElse(null);
         System.out.println(wishListRepository.existsByProductAndUser(product, user));
-//        if (wishListRepository.existsByProduct(product)&& wishListRepository.existsByCustomer(customer)){
         if (wishListRepository.existsByProductAndUser(product, user)){
-            System.out.println("It is already added to favourites so now gonna remove");
             Wishlist deleteWishlist = wishListRepository.findByProductAndUser(product,user);
             wishListRepository.delete(deleteWishlist);
             return ResponseEntity.ok().body(new MessageResponse("Removed from your wishlist"));
